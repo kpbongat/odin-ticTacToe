@@ -4,7 +4,7 @@ function Gameboard () {
     for (let row = 0; row < 3; row++){
         board.push([]);
         for (let col = 0; col < 3; col++) {
-            board[row].push('');
+            board[row].push(Cell());
         }
     }
     
@@ -25,4 +25,18 @@ function Player (name, number) {
         return token;
     }
     return {getName, getToken};
+}
+
+function Cell () {
+    const state = '';
+
+    function setState (newState) {
+        state = newState;
+    }
+    
+    function getState () {
+        return state;
+    }
+
+    return {setState, getState}
 }
