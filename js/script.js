@@ -12,7 +12,17 @@ function Gameboard () {
         return board;
 
     }
-    return {getBoard}
+    return {getBoard};
 }
 
-Gameboard();
+function Player (name, number) {
+    const token = (number === 1) ? 'X' : 'O';
+
+    function getName () {
+        return name;
+    }
+    function getToken () {
+        return token;
+    }
+    return {getName, getToken};
+}
