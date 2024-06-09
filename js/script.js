@@ -15,6 +15,13 @@ const GameController = (function () {
         }
         return {getBoard};
     })();
+    
+    const promptName = (number) => prompt(`Enter the name of Player ${number}`);
+    const playerOne = Player(promptName(1), 1);
+    const playerTwo = Player(promptName(2), 2);
+
+    return {};
+
 
 
 
