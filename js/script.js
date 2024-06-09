@@ -13,12 +13,24 @@ const GameController = (function () {
             return board;
     
         }
+        
         return {getBoard};
     })();
     
     const promptName = (number) => prompt(`Enter the name of Player ${number}`);
     const playerOne = Player(promptName(1), 1);
     const playerTwo = Player(promptName(2), 2);
+
+    let currentPlayer;
+    while (true) {
+        currentPlayer = (currentPlayer != playerOne) ? playerOne : playerTwo;
+        const moveRow = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at row?`);
+        const moveColumn = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at column?`);
+        const targetCell = Gameboard.getBoard()[moveRow][moveColumn];
+        targetCell.setState(currentPlayer.getToken());
+        break;
+    }
+
 
     return {};
 
@@ -40,7 +52,7 @@ function Player (name, number) {
 }
 
 function Cell () {
-    const state = '';
+    let state = '';
 
     function setState (newState) {
         state = newState;
