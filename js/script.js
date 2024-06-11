@@ -17,19 +17,68 @@ const GameController = (function () {
         return {getBoard};
     })();
     
+    function checkWin () {
+        const targetRowLength = Gameboard.getBoard()[moveRow]
+                                         .reduce((count, cell)=>{
+            return (cell.getState() === currentPlayer.getToken()) ? ++count : count;       
+        }, 0)
+        
+        const targetColLength = Gameboard.getBoard()
+                                         .reduce((count, row)=>{             
+            return (row[moveColumn].getState() === currentPlayer.getToken())? ++count : count;
+        }, 0)
+     
+        const backDiagonalLength = [Gameboard.getBoard()[0][0], 
+                                    Gameboard.getBoard()[1][1], 
+                                    Gameboard.getBoard()[2][2]].reduce((count, cell)=>{
+            return (cell.getState() === currentPlayer.getToken()) ? ++count : count;
+        }, 0)
+
+        const frontDiagonalLength = [Gameboard.getBoard()[0][2], 
+                                    Gameboard.getBoard()[1][1], 
+                                    Gameboard.getBoard()[2][0]].reduce((count, cell)=>{
+            return (cell.getState() === currentPlayer.getToken()) ? ++count : count;      
+        }, 0)
+
+        return (targetRowLength === 3 || targetColLength === 3 || backDiagonalLength === 3 || frontDiagonalLength === 3);
+    }
+        
+
+
     const promptName = (number) => prompt(`Enter the name of Player ${number}`);
     const playerOne = Player(promptName(1), 1);
     const playerTwo = Player(promptName(2), 2);
 
     let currentPlayer;
-    while (true) {
+    let moveRow;
+    let moveColumn;
+    let targetCell;
+    let winner;
+    let tokensPlaced = 0;
+    
+    while (!winner) {
         currentPlayer = (currentPlayer != playerOne) ? playerOne : playerTwo;
-        const moveRow = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at row?`);
-        const moveColumn = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at column?`);
-        const targetCell = Gameboard.getBoard()[moveRow][moveColumn];
+        moveRow = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at row?`);
+        moveColumn = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at column?`);
+        targetCell = Gameboard.getBoard()[moveRow][moveColumn];
         targetCell.setState(currentPlayer.getToken());
-        break;
+        tokensPlaced++;
+
+        for (let i = 0; i < Gameboard.getBoard().length; i++) {
+            console.log({0:Gameboard.getBoard()[i][0].getState(), 1:Gameboard.getBoard()[i][1].getState(), 2:Gameboard.getBoard()[i][2].getState()});
+        }
+        
+        if (tokensPlaced >= 5) {
+        winner = (checkWin()) ? currentPlayer : null;
+        }
+        if (tokensPlaced === 9) {
+            break;
+        }
+
     }
+
+    console.log((winner) ? `${winner.getName()} (${winner.getToken()}) won!`: 'Game drawn!')
+    
 
 
     return {};
