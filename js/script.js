@@ -42,9 +42,35 @@ const GameController = (function () {
 
         return (targetRowLength === 3 || targetColLength === 3 || backDiagonalLength === 3 || frontDiagonalLength === 3);
     }
-        
+    
+    function switchTurn () {
+        currentPlayer = (currentPlayer != playerOne) ? playerOne : playerTwo;
+    }
 
+    function getPlayerMove () {
+        moveRow = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at row?`);
+        moveColumn = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at column?`);
+    }
 
+    function placeToken () {
+        targetCell = Gameboard.getBoard()[moveRow][moveColumn];
+        targetCell.setState(currentPlayer.getToken());
+    }
+
+    function printBoard () {
+        for (let i = 0; i < Gameboard.getBoard().length; i++) {
+            console.log(
+                {
+                0:Gameboard.getBoard()[i][0].getState(), 
+                1:Gameboard.getBoard()[i][1].getState(), 
+                2:Gameboard.getBoard()[i][2].getState(
+                )});
+        }
+    }
+
+    function printWinner () {
+        console.log((winner) ? `${winner.getName()} (${winner.getToken()}) won!`: 'Game drawn!')
+    }
     const promptName = (number) => prompt(`Enter the name of Player ${number}`);
     const playerOne = Player(promptName(1), 1);
     const playerTwo = Player(promptName(2), 2);
@@ -57,17 +83,13 @@ const GameController = (function () {
     let tokensPlaced = 0;
     
     while (!winner) {
-        currentPlayer = (currentPlayer != playerOne) ? playerOne : playerTwo;
-        moveRow = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at row?`);
-        moveColumn = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at column?`);
-        targetCell = Gameboard.getBoard()[moveRow][moveColumn];
-        targetCell.setState(currentPlayer.getToken());
+        switchTurn();
+        getPlayerMove();
+        placeToken();
         tokensPlaced++;
 
-        for (let i = 0; i < Gameboard.getBoard().length; i++) {
-            console.log({0:Gameboard.getBoard()[i][0].getState(), 1:Gameboard.getBoard()[i][1].getState(), 2:Gameboard.getBoard()[i][2].getState()});
-        }
-        
+        printBoard();
+
         if (tokensPlaced >= 5) {
         winner = (checkWin()) ? currentPlayer : null;
         }
@@ -77,14 +99,9 @@ const GameController = (function () {
 
     }
 
-    console.log((winner) ? `${winner.getName()} (${winner.getToken()}) won!`: 'Game drawn!')
-    
-
+    printWinner();
 
     return {};
-
-
-
 
 })();
 
