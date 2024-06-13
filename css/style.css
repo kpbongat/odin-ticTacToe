@@ -1,0 +1,24 @@
+.grid-board {
+    display: grid;
+    grid-template: repeat(3, 250px) / repeat(3, 250px);
+}
+
+.grid-cell {
+    border: 1px solid black;
+}
+
+.grid-cell.top {
+    border-top: 0px;
+}
+
+.grid-cell.left {
+    border-left: 0px;
+}
+
+.grid-cell.right {
+    border-right: 0px;
+}
+
+.grid-cell.bottom {
+    border-bottom: 0px;
+}
