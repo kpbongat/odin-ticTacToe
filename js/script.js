@@ -1,22 +1,22 @@
-const GameController = (function () {
-    const Gameboard = (function () {
-        const board = [];
-        
-        for (let row = 0; row < 3; row++){
-            board.push([]);
-            for (let col = 0; col < 3; col++) {
-                board[row].push(Cell());
-            }
-        }
-        
-        function getBoard () {
-            return board;
+const Gameboard = (function () {
+    const board = [];
     
+    for (let row = 0; row < 3; row++){
+        board.push([]);
+        for (let col = 0; col < 3; col++) {
+            board[row].push(Cell());
         }
-        
-        return {getBoard};
-    })();
+    }
     
+    function getBoard () {
+        return board;
+
+    }
+    
+    return {getBoard};
+})();
+
+const GameController = (function () {  
     function checkWin () {
         const targetRowLength = Gameboard.getBoard()[moveRow]
                                          .reduce((count, cell)=>{
@@ -104,6 +104,12 @@ const GameController = (function () {
     return {};
 
 })();
+
+const ScreenController = (function () {
+
+
+})()
+
 
 function Player (name, number) {
     const token = (number === 1) ? 'X' : 'O';
