@@ -83,26 +83,23 @@ const GameController = (function () {
     let winner;
     let tokensPlaced = 0;
     
-    while (!winner) {
+    function playRound () {
         switchTurn();
         getPlayerMove();
         placeToken();
         tokensPlaced++;
 
-        printBoard();
 
         if (tokensPlaced >= 5) {
         winner = (checkWin()) ? currentPlayer : null;
         }
         if (tokensPlaced === 9) {
-            break;
+            return;
         }
 
     }
 
-    printWinner();
-
-    return {};
+    return {playRound};
 
 })();
 
@@ -117,11 +114,13 @@ const ScreenController = (function () {
                 currentCell =  document.querySelectorAll('.grid-cell')[divCounter++];
                 currentCell.setAttribute('col', col);
                 currentCell.setAttribute('row', row);
-
+                game.playRound();
             }
         }
 
     })();
+
+    
     
 
     function updateScreen () {
