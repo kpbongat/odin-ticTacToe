@@ -114,6 +114,10 @@ const ScreenController = (function () {
                 currentCell =  document.querySelectorAll('.grid-cell')[divCounter++];
                 currentCell.setAttribute('col', col);
                 currentCell.setAttribute('row', row);
+                currentCell.addEventListener('click', ()=>{
+                    game.playRound(row, col);
+                    updateScreen();
+                })
             }
         }
 
