@@ -104,9 +104,25 @@ const GameController = (function () {
 
     return {};
 
-});
+})();
 
 const ScreenController = (function () {
+    const game = GameController;
+
+    (function initializeScreen () {
+        let divCounter = 0;
+        let currentCell;
+        for (let row = 0; row < 3; row++){
+            for (let col = 0; col < 3; col++){
+                currentCell =  document.querySelectorAll('.grid-cell')[divCounter++];
+                currentCell.setAttribute('col', col);
+                currentCell.setAttribute('row', row);
+
+            }
+        }
+
+    })();
+    
 
     function updateScreen () {
         let board = Gameboard.getBoard();
