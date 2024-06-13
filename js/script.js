@@ -47,9 +47,9 @@ const GameController = (function () {
         currentPlayer = (currentPlayer != playerOne) ? playerOne : playerTwo;
     }
 
-    function getPlayerMove () {
-        moveRow = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at row?`);
-        moveColumn = prompt(`${currentPlayer.getName()} to move. Place ${currentPlayer.getToken()} at column?`);
+    function getPlayerMove (rowIndex, colIndex) {
+        moveRow = rowIndex;
+        moveColumn = colIndex;
     }
 
     function placeToken () {
@@ -83,9 +83,9 @@ const GameController = (function () {
     let winner;
     let tokensPlaced = 0;
     
-    function playRound () {
+    function playRound (row, col) {
         switchTurn();
-        getPlayerMove();
+        getPlayerMove(row, col);
         placeToken();
         tokensPlaced++;
 
@@ -114,7 +114,6 @@ const ScreenController = (function () {
                 currentCell =  document.querySelectorAll('.grid-cell')[divCounter++];
                 currentCell.setAttribute('col', col);
                 currentCell.setAttribute('row', row);
-                game.playRound();
             }
         }
 
