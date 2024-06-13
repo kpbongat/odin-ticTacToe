@@ -104,12 +104,26 @@ const GameController = (function () {
 
     return {};
 
-})();
+});
 
 const ScreenController = (function () {
-    
+
+    function updateScreen () {
+        let board = Gameboard.getBoard();
+        let divCounter = 0;
+        for (let row = 0; row < 3; row++){
+            for (let col = 0; col < 3; col++){
+                document.querySelectorAll('.grid-cell')[divCounter++].textContent = board[row][col].getState();
+
+            }
+            
+
+        }
 
 
+    }
+
+    return {updateScreen}
 
 
 })()
@@ -140,3 +154,5 @@ function Cell () {
 
     return {setState, getState}
 }
+
+ScreenController.updateScreen();
