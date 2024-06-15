@@ -1,4 +1,4 @@
-const Gameboard = (function () {
+function Board () {
     const board = [];
     
     for (let row = 0; row < 3; row++){
@@ -14,9 +14,11 @@ const Gameboard = (function () {
     }
     
     return {getBoard};
-})();
+};
 
-const GameController = (function () {  
+const GameController = function () {  
+    const Gameboard = Board();
+
     function checkWin () {
         const targetRowLength = Gameboard.getBoard()[moveRow]
                                          .reduce((count, cell)=>{
@@ -87,6 +89,9 @@ const GameController = (function () {
         return tokensPlaced;
     }
     
+    function getGameBoard () {
+        return Gameboard;
+    }
     const promptName = (number) => prompt(`Enter the name of Player ${number}`);
     const playerOne = Player(promptName(1), 1);
     const playerTwo = Player(promptName(2), 2);
@@ -110,12 +115,12 @@ const GameController = (function () {
     }
     }
 
-    return {playRound, getCurrentPlayer, getWinner, getTokensPlaced};
+    return {playRound, getCurrentPlayer, getWinner, getTokensPlaced, getGameBoard};
 
-})();
+};
 
 const ScreenController = (function () {
-    const game = GameController;
+    let game = GameController();
 
     (function initializeScreen () {
         let divCounter = 0;
@@ -137,13 +142,17 @@ const ScreenController = (function () {
         gameInfoDiv.textContent = `${game.getCurrentPlayer().getName()} (${game.getCurrentPlayer().getToken()}) to play!`;
         document.querySelector('body').appendChild(gameInfoDiv);
 
+        const newGameButton = document.querySelector('.new-game').addEventListener('click', ()=>{
+            game = GameController();
+            updateScreen();
+        })
     })();
 
     
     
 
     function updateScreen () {
-        let board = Gameboard.getBoard();
+        let board = game.getGameBoard().getBoard();
         let divCounter = 0;
         for (let row = 0; row < 3; row++){
             for (let col = 0; col < 3; col++){
