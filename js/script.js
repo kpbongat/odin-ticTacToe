@@ -78,6 +78,14 @@ const GameController = (function () {
     function getCurrentPlayer () {
         return currentPlayer;
     }
+
+    function getWinner () {
+        return winner;
+    }
+
+    function getTokensPlaced () {
+        return tokensPlaced;
+    }
     
     const promptName = (number) => prompt(`Enter the name of Player ${number}`);
     const playerOne = Player(promptName(1), 1);
@@ -91,22 +99,18 @@ const GameController = (function () {
     let tokensPlaced = 0;
     
     function playRound (row, col) {
-        getPlayerMove(row, col);
-        placeToken();
-        switchTurn();
-        
+        if (!winner) {
+            getPlayerMove(row, col);
+            placeToken();       
 
-
-        if (tokensPlaced >= 5) {
-        winner = (checkWin()) ? currentPlayer : null;
-        }
-        if (tokensPlaced === 9) {
-            return;
-        }
-
+            if (tokensPlaced >= 5) {
+            winner = (checkWin()) ? currentPlayer : null;
+            }
+            switchTurn();
+    }
     }
 
-    return {playRound, getCurrentPlayer};
+    return {playRound, getCurrentPlayer, getWinner, getTokensPlaced};
 
 })();
 
@@ -148,9 +152,20 @@ const ScreenController = (function () {
             }
             
         }
+        
+        const gameInfoDiv = document.querySelector('.turn-info');
+        
+        if (game.getWinner()) {
+            gameInfoDiv.textContent = `${game.getCurrentPlayer().getName()} (${game.getCurrentPlayer().getToken()}) wins!`;
+        }
 
-        document.querySelector('.turn-info').textContent = `${game.getCurrentPlayer().getName()} (${game.getCurrentPlayer().getToken()}) to play!`;
+        else if (game.getTokensPlaced() === 9) {
+            gameInfoDiv.textContent = 'The game ends with a draw!';
+        }
 
+        else {
+            gameInfoDiv.textContent = `${game.getCurrentPlayer().getName()} (${game.getCurrentPlayer().getToken()}) to play!`;
+        }
         
 
 
