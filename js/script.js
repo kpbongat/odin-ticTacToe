@@ -54,7 +54,10 @@ const GameController = (function () {
 
     function placeToken () {
         targetCell = Gameboard.getBoard()[moveRow][moveColumn];
+        if (!targetCell.getState()) {
         targetCell.setState(currentPlayer.getToken());
+        tokensPlaced++;
+        }
     }
 
     function printBoard () {
@@ -87,7 +90,7 @@ const GameController = (function () {
         switchTurn();
         getPlayerMove(row, col);
         placeToken();
-        tokensPlaced++;
+        
 
 
         if (tokensPlaced >= 5) {
