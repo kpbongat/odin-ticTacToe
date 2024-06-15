@@ -74,12 +74,16 @@ const GameController = (function () {
     function printWinner () {
         console.log((winner) ? `${winner.getName()} (${winner.getToken()}) won!`: 'Game drawn!')
     }
+
+    function getCurrentPlayer () {
+        return currentPlayer;
+    }
     
     const promptName = (number) => prompt(`Enter the name of Player ${number}`);
     const playerOne = Player(promptName(1), 1);
     const playerTwo = Player(promptName(2), 2);
 
-    let currentPlayer;
+    let currentPlayer = playerOne;
     let moveRow;
     let moveColumn;
     let targetCell;
@@ -87,9 +91,9 @@ const GameController = (function () {
     let tokensPlaced = 0;
     
     function playRound (row, col) {
-        switchTurn();
         getPlayerMove(row, col);
         placeToken();
+        switchTurn();
         
 
 
@@ -102,7 +106,7 @@ const GameController = (function () {
 
     }
 
-    return {playRound};
+    return {playRound, getCurrentPlayer};
 
 })();
 
@@ -124,6 +128,11 @@ const ScreenController = (function () {
             }
         }
 
+        const gameInfoDiv = document.createElement('div');
+        gameInfoDiv.classList.toggle('turn-info');
+        gameInfoDiv.textContent = `${game.getCurrentPlayer().getName()} (${game.getCurrentPlayer().getToken()}) to play!`;
+        document.querySelector('body').appendChild(gameInfoDiv);
+
     })();
 
     
@@ -138,8 +147,11 @@ const ScreenController = (function () {
 
             }
             
-
         }
+
+        document.querySelector('.turn-info').textContent = `${game.getCurrentPlayer().getName()} (${game.getCurrentPlayer().getToken()}) to play!`;
+
+        
 
 
     }
